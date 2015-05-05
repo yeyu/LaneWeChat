@@ -11,6 +11,16 @@ namespace LaneWeChat\Core;
  */
 class AccessToken{
     /**
+     * 获取微信服务器IP列表
+     */
+    public static function getWeChatIPList(){
+        //获取ACCESS_TOKEN
+        $accessToken = AccessToken::getAccessToken();
+        $url = 'https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token='.$accessToken;
+        return Curl::callWebServer($url, '', 'GET');
+    }
+
+    /**
      * 获取微信Access_Token
      */
     public static function getAccessToken(){
@@ -34,15 +44,9 @@ class AccessToken{
         }
         $accessToken['time'] = time();
         $accessTokenJson = json_encode($accessToken);
-        //存入数据库
-        /**
-         * 这里通常我会把access_token存起来，然后用的时候读取，判断是否过期，如果过期就重新调用此方法获取，存取操作请自行完成
-         *
-         * 请将变量$accessTokenJson给存起来，这个变量是一个字符串
-         */
-        $f = fopen('access_token', 'w+');
-        fwrite($f, $accessTokenJson);
-        fclose($f);
+        Mysql::config(DATABASE_NAME, DATABASE_USER, DATABASE_PASS, DATABASE_HOST, DATABASE_PORT);
+        $newAccesstoken = array('accesstoken' => $accessToken['access_token'],'expiresin' => $accessToken['expires_in'],'time' => $accessToken['time']);
+        Mysql::insert('wechataccesstoken',$newAccesstoken);
         return $accessToken;
     }
 
@@ -52,12 +56,12 @@ class AccessToken{
      * @return bool
      */
     private static function _checkAccessToken(){
-        //获取access_token。是上面的获取方法获取到后存起来的。
-//        $accessToken = YourDatabase::get('access_token');
-        $data = file_get_contents('access_token');
-        $accessToken['value'] = $data;
-        if(!empty($accessToken['value'])){
-            $accessToken = json_decode($accessToken['value'], true);
+        Mysql::config(DATABASE_NAME, DATABASE_USER, DATABASE_PASS, DATABASE_HOST, DATABASE_PORT);
+        $result = Mysql::select('wechataccesstoken','','id desc',1);
+        if(count($result, 1) > 0){
+            $accessToken['access_token'] = $result[0]['accesstoken'];
+            $accessToken['expires_in'] = $result[0]['expiresin'];
+            $accessToken['time'] = $result[0]['time'];
             if(time() - $accessToken['time'] < $accessToken['expires_in']-10){
                 return $accessToken;
             }
