@@ -26,6 +26,14 @@ define('ENCODING_AES_KEY', "MqAuKoex6FyT5No0OcpRyCicThGs0P1vz4mJ2gwvvkF");
 define("WECHAT_APPID", 'wx5d57f64bb4804d90');
 define("WECHAT_APPSECRET", '4b1fa6d9442351ec9268eff05e38f521');
 
+/*
+ * mysql配置
+ */
+define("DATABASE_HOST", 'localhost');
+define("DATABASE_PORT", '3306');
+define("DATABASE_NAME", 'gps');
+define("DATABASE_USER", 'root');
+define("DATABASE_PASS", '');
 
 ////-----引入系统所需类库-------------------
 ////引入错误消息类
