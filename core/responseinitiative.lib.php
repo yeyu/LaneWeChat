@@ -11,7 +11,8 @@ namespace LaneWeChat\Core;
  */
 class ResponseInitiative{
 
-    protected static $queryUrl = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
+    protected static $headUrl = 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=';
+    protected static $queryUrl = '';
 
     protected static $action = 'POST';
 
@@ -24,7 +25,7 @@ class ResponseInitiative{
     public static function text($tousername, $content){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
+        self::$queryUrl = self::$headUrl.$accessToken;
 
         //开始
         $template = array(
@@ -48,7 +49,7 @@ class ResponseInitiative{
     public static function image($tousername, $mediaId){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
+        self::$queryUrl = self::$headUrl.$accessToken;
 
         //开始
         $template = array(
@@ -71,7 +72,7 @@ class ResponseInitiative{
     public static function voice($tousername, $mediaId){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
+        self::$queryUrl = self::$headUrl.$accessToken;
 
         //开始
         $template = array(
@@ -96,7 +97,7 @@ class ResponseInitiative{
     public static function video($tousername, $mediaId, $title, $description){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
+        self::$queryUrl = self::$headUrl.$accessToken;
 
         //开始
         $template = array(
@@ -125,7 +126,7 @@ class ResponseInitiative{
     public static function music($tousername, $title, $description, $musicUrl, $hqMusicUrl, $thumbMediaId){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
+        self::$queryUrl = self::$headUrl.$accessToken;
 
         //开始
         $template = array(
@@ -170,7 +171,7 @@ class ResponseInitiative{
     public static function news($tousername, $item){
         //获取ACCESS_TOKEN
         $accessToken = AccessToken::getAccessToken();
-        self::$queryUrl = self::$queryUrl.$accessToken;
+        self::$queryUrl = self::$headUrl.$accessToken;
 
         //开始
         $template = array(
